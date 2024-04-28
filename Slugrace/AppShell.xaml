@@ -8,8 +8,7 @@
     Title="Slugrace">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+        Title="Test"
+        ContentTemplate="{DataTemplate local:TestPage}"
+        Route="TestPage" />
 </Shell>
