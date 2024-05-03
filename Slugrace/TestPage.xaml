@@ -3,15 +3,4 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Slugrace.TestPage"
              Title="TestPage">
-    <ContentPage.Content>
-        <VerticalStackLayout>
-            <VerticalStackLayout.Children>
-                <Label
-                    TextColor="Firebrick"
-                    FontSize="100">
-                    Hey there
-                </Label>
-            </VerticalStackLayout.Children>
-        </VerticalStackLayout>
-    </ContentPage.Content>
 </ContentPage>
