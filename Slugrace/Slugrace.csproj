@@ -57,6 +57,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\all_slugs.png" />
 	  <None Remove="Resources\Images\iffy.png" />
 	  <None Remove="Resources\Images\iffy_body.png" />
 	  <None Remove="Resources\Images\iffy_eye.png" />
@@ -64,6 +65,8 @@
 	  <None Remove="Resources\Images\slowpoke.png" />
 	  <None Remove="Resources\Images\slowpoke_body.png" />
 	  <None Remove="Resources\Images\slowpoke_eye.png" />
+	  <None Remove="Resources\Images\sound_off.png" />
+	  <None Remove="Resources\Images\sound_on.png" />
 	  <None Remove="Resources\Images\speedster.png" />
 	  <None Remove="Resources\Images\speedster_body.png" />
 	  <None Remove="Resources\Images\speedster_eye.png" />
