@@ -9,6 +9,6 @@
     Title="Slugrace">
 
     <ShellContent
-        ContentTemplate="{DataTemplate views:GameOverPage}"
-        Route="GameOverPage" />
+        ContentTemplate="{DataTemplate views:SettingsPage}"
+        Route="SettingsPage" />
 </Shell>

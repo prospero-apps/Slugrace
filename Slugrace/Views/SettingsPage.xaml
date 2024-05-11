@@ -3,13 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Slugrace.Controls"
              x:Class="Slugrace.Views.SettingsPage">
-
-    <ContentPage.Resources>
-        <Style TargetType="RadioButton">
-            <Setter Property="Margin" Value="0, 0, 0, 10" />
-        </Style>
-    </ContentPage.Resources>
-
+    
     <Grid
         Margin="10"
         RowDefinitions="40, 2.5*, 1.5*, 50">
@@ -87,25 +81,60 @@
                     ColumnDefinitions="4*, 2*">
                     <RadioButton
                         Content="The game is over when there is only one player with any money left."
+                        IsChecked="True"
                         GroupName="endingConditions" />
                     <RadioButton
                         Grid.Row="1"
                         Content="The game is over not later than after a given number of races."
-                        GroupName="endingConditions" />
+                        GroupName="endingConditions">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter TargetName="maxRacesEntry" Property="Opacity" Value="1" />
+                                        <Setter TargetName="maxRacesEntry" Property="IsEnabled" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </RadioButton>
                     <Entry
+                        x:Name="maxRacesEntry"
                         Grid.Row="1"
                         Grid.Column="1" 
-                        WidthRequest="200"
-                        HorizontalOptions="Start" />
-                    <Entry
-                        Grid.Row="2"
-                        Grid.Column="1" 
-                        WidthRequest="200" 
-                        HorizontalOptions="Start" />
+                        Placeholder="Set max number of races (1-100)"
+                        WidthRequest="300"
+                        HorizontalOptions="Start" 
+                        Opacity="0"
+                        IsEnabled="False"
+                        TextChanged="OnMaxRacesTextChanged" />
                     <RadioButton
                         Grid.Row="2"
                         Content="The game is over not later than after the racing time you set has elapsed."
-                        GroupName="endingConditions" />
+                        GroupName="endingConditions">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter TargetName="maxTimeEntry" Property="Opacity" Value="1" />
+                                        <Setter TargetName="maxTimeEntry" Property="IsEnabled" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </RadioButton>
+                    <Entry
+                        x:Name="maxTimeEntry"
+                        Grid.Row="2"
+                        Grid.Column="1" 
+                        Placeholder="Set max game time (1-120 min)"
+                        WidthRequest="300" 
+                        HorizontalOptions="Start" 
+                        Opacity="0"
+                        IsEnabled="False"    
+                        TextChanged="OnMaxTimeTextChanged" />
                 </Grid>
             </VerticalStackLayout>
         </Border>
@@ -113,6 +142,7 @@
         <!--the Ready button-->
         <Button 
             Grid.Row="3"
-            Text="Ready" />
+            Text="Ready">
+        </Button>
     </Grid>
 </ContentPage>
