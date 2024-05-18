@@ -9,6 +9,6 @@
     Title="Slugrace">
 
     <ShellContent
-        ContentTemplate="{DataTemplate views:TestPage}"
+        ContentTemplate="{DataTemplate views:RacePage}"
         Route="TestPage" />
 </Shell>
