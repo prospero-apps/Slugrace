@@ -2,18 +2,14 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:Slugrace.Controls"
-             x:Class="Slugrace.Controls.SlugsStats">
-
-    <ContentView.Resources>
-        <Style TargetType="Label" BasedOn="{StaticResource labelBaseStyle}" />
-    </ContentView.Resources>
-    
+             x:Class="Slugrace.Controls.SlugsStats">    
     <Grid
         RowDefinitions="*, *, *, *, *"
         ColumnDefinitions="*">
         <Label
             Text="Slugs' Stats"
-            Style="{StaticResource labelSectionTitleStyle}" />
+            Style="{OnPlatform {StaticResource labelSectionTitleStyle},
+                Android={StaticResource androidLabelSectionTitleStyle}}" />
         <controls:SlugStats 
             Grid.Row="1" />
         <controls:SlugStats 
