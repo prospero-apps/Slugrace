@@ -66,7 +66,9 @@
 	  <None Remove="Resources\Images\slowpoke_body.png" />
 	  <None Remove="Resources\Images\slowpoke_eye.png" />
 	  <None Remove="Resources\Images\sound_off.png" />
+	  <None Remove="Resources\Images\sound_off_dark.png" />
 	  <None Remove="Resources\Images\sound_on.png" />
+	  <None Remove="Resources\Images\sound_on_dark.png" />
 	  <None Remove="Resources\Images\speedster.png" />
 	  <None Remove="Resources\Images\speedster_body.png" />
 	  <None Remove="Resources\Images\speedster_eye.png" />

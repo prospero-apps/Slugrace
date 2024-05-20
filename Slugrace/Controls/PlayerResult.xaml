@@ -4,7 +4,8 @@
              x:Class="Slugrace.Controls.PlayerResult">
 
     <ContentView.Resources>
-        <Color x:Key="backgroundColor">#FFF4E5</Color>
+        <Color x:Key="backgroundColorLight">#FFF4E5</Color>
+        <Color x:Key="backgroundColorDark">Black</Color>
         <Style TargetType="Label"
                    BasedOn="{OnPlatform {StaticResource labelBaseStyle},
                        Android={StaticResource androidLabelBaseStyle}}" />
