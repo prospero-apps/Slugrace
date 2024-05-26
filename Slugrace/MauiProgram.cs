@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Slugrace.Views;
+using Slugrace.ViewModels;
 
 namespace Slugrace;
 
@@ -18,6 +20,8 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+        builder.Services.AddSingleton<TestPage>();
+        builder.Services.AddSingleton<TestViewModel>();
 
         return builder.Build();
     }
