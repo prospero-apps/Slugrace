@@ -1,28 +1,34 @@
+using Slugrace.ViewModels;
+
 namespace Slugrace.Controls;
 
 public partial class PlayerSettings : ContentView
 {
 	public PlayerSettings()
 	{
-		InitializeComponent();
+        InitializeComponent();
         GoToNameState(true);
         VisualStateManager.GoToState(initialMoneyEntry, "Empty");
     }
 
     private void OnNameTextChanged(object sender, TextChangedEventArgs e)
     {
-        bool nameValid = e.NewTextValue.Length <= 10;
+        bool nameValid = (BindingContext as PlayerSettingsViewModel)!.NameIsValid;
         GoToNameState(nameValid);
     }
 
     private void OnInitialMoneyTextChanged(object sender, TextChangedEventArgs e)
     {
-        Helpers.ValidateNumericInputAndSetState(e.NewTextValue, 10, 5000, initialMoneyEntry);
+        if (BindingContext != null)
+        {
+            bool initialMoneyValid = (BindingContext as PlayerSettingsViewModel)!.InitialMoneyIsValid;
+            Helpers.HandleNumericEntryState(initialMoneyValid, initialMoneyEntry);
+        }
     }
 
     void GoToNameState(bool nameValid)
     {
         string visualState = nameValid ? "Valid" : "Invalid";
         VisualStateManager.GoToState(nameEntry, visualState);
-    }
+    }    
 }
