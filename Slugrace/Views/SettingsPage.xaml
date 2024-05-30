@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:controls="clr-namespace:Slugrace.Controls"
+             xmlns:viewmodels="clr-namespace:Slugrace.ViewModels"
+             xmlns:behaviors="clr-namespace:Slugrace.Behaviors"
+             xmlns:converters="clr-namespace:Slugrace.Converters"
+             x:DataType="viewmodels:SettingsViewModel"
              x:Class="Slugrace.Views.SettingsPage">
 
     <ContentPage.Resources>
         <x:Double x:Key="entryWidth">300</x:Double>
         <x:Double x:Key="invisible">0</x:Double>
+        <converters:ZeroToEmptyStringConverter x:Key="zeroToEmptyConverter" />
+        <toolkit:InvertedBoolConverter x:Key="invertedBoolConverter" />
     </ContentPage.Resources>
 
     <Grid
@@ -57,9 +64,20 @@
                                     </Label.Text>
                                 </Label>
                             </RadioButton.Content>
+                            <RadioButton.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged" 
+                                    Command="{Binding CreatePlayerListCommand}">
+                                    <toolkit:EventToCommandBehavior.CommandParameter>
+                                        <x:Int32>1</x:Int32>
+                                    </toolkit:EventToCommandBehavior.CommandParameter>
+                                </toolkit:EventToCommandBehavior>
+                            </RadioButton.Behaviors>
                         </RadioButton>
 
-                        <RadioButton                             
+                        <RadioButton 
+                            x:Name="players2" 
+                            IsChecked="True"
                             GroupName="players">
                             <RadioButton.Content>
                                 <Label>
@@ -71,9 +89,19 @@
                                     </Label.Text>
                                 </Label>
                             </RadioButton.Content>
+                            <RadioButton.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding CreatePlayerListCommand}">
+                                    <toolkit:EventToCommandBehavior.CommandParameter>
+                                        <x:Int32>2</x:Int32>
+                                    </toolkit:EventToCommandBehavior.CommandParameter>
+                                </toolkit:EventToCommandBehavior>
+                            </RadioButton.Behaviors>
                         </RadioButton>
 
-                        <RadioButton                             
+                        <RadioButton   
+                            x:Name="players3"
                             GroupName="players">
                             <RadioButton.Content>
                                 <Label>
@@ -85,9 +113,19 @@
                                     </Label.Text>
                                 </Label>
                             </RadioButton.Content>
+                            <RadioButton.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding CreatePlayerListCommand}">
+                                    <toolkit:EventToCommandBehavior.CommandParameter>
+                                        <x:Int32>3</x:Int32>
+                                    </toolkit:EventToCommandBehavior.CommandParameter>
+                                </toolkit:EventToCommandBehavior>
+                            </RadioButton.Behaviors>
                         </RadioButton>
 
-                        <RadioButton                             
+                        <RadioButton  
+                            x:Name="players4"
                             GroupName="players">
                             <RadioButton.Content>
                                 <Label>
@@ -99,6 +137,15 @@
                                     </Label.Text>
                                 </Label>
                             </RadioButton.Content>
+                            <RadioButton.Behaviors>
+                                <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding CreatePlayerListCommand}">
+                                    <toolkit:EventToCommandBehavior.CommandParameter>
+                                        <x:Int32>4</x:Int32>
+                                    </toolkit:EventToCommandBehavior.CommandParameter>
+                                </toolkit:EventToCommandBehavior>
+                            </RadioButton.Behaviors>
                         </RadioButton>
                     </HorizontalStackLayout>
 
@@ -129,13 +176,31 @@
                     </Grid>
 
                     <VerticalStackLayout>
-                        <controls:PlayerSettings />
-                        <controls:PlayerSettings />
-                        <controls:PlayerSettings />
-                        <controls:PlayerSettings />
+                        <controls:PlayerSettings>
+                            <controls:PlayerSettings.BindingContext>
+                                <Binding Path="Players[0]" />
+                            </controls:PlayerSettings.BindingContext>
+                        </controls:PlayerSettings>
+
+                        <controls:PlayerSettings>
+                            <controls:PlayerSettings.BindingContext>
+                                <Binding Path="Players[1]" />
+                            </controls:PlayerSettings.BindingContext>
+                        </controls:PlayerSettings>
+
+                        <controls:PlayerSettings>
+                            <controls:PlayerSettings.BindingContext>
+                                <Binding Path="Players[2]" />
+                            </controls:PlayerSettings.BindingContext>
+                        </controls:PlayerSettings>
+
+                        <controls:PlayerSettings>
+                            <controls:PlayerSettings.BindingContext>
+                                <Binding Path="Players[3]" />
+                            </controls:PlayerSettings.BindingContext>
+                        </controls:PlayerSettings>
                     </VerticalStackLayout>
                 </VerticalStackLayout>
-
             </Grid>
         </Border>
 
@@ -152,6 +217,7 @@
                     ColumnDefinitions="4*, 2*">
                     <RadioButton
                         IsChecked="True"
+                        IsVisible="{Binding OnlyOnePlayer, Converter={StaticResource invertedBoolConverter}}"
                         GroupName="endingConditions">
                         <RadioButton.Content>
                             <Label>
@@ -163,10 +229,18 @@
                                 </Label.Text>
                             </Label>
                         </RadioButton.Content>
+                        <RadioButton.Behaviors>
+                            <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding SetEndingConditionCommand}"
+                                    CommandParameter="money">
+                            </toolkit:EventToCommandBehavior>
+                        </RadioButton.Behaviors>
                     </RadioButton>
 
                     <RadioButton
                         Grid.Row="1"
+                        IsChecked="{Binding RacesEndingConditionSet}"
                         GroupName="endingConditions">
                         <RadioButton.Content>
                             <Label>
@@ -178,6 +252,13 @@
                                 </Label.Text>
                             </Label>
                         </RadioButton.Content>
+                        <RadioButton.Behaviors>
+                            <toolkit:EventToCommandBehavior
+                                    EventName="CheckedChanged"
+                                    Command="{Binding SetEndingConditionCommand}"
+                                    CommandParameter="races">
+                            </toolkit:EventToCommandBehavior>
+                        </RadioButton.Behaviors>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Unchecked" />
@@ -198,7 +279,8 @@
                         WidthRequest="{OnPlatform {StaticResource entryWidth}, Android=100}"
                         HorizontalOptions="Start"                         
                         Opacity="{StaticResource invisible}"
-                        IsEnabled="False"                        
+                        IsEnabled="False"  
+                        Text="{Binding NumberOfRacesSet, Converter={StaticResource zeroToEmptyConverter}}"
                         TextChanged="OnMaxRacesTextChanged">
                         <Entry.Placeholder>
                             <OnPlatform x:TypeArguments="x:String">
@@ -206,6 +288,9 @@
                                 <On Platform="Android" Value="1-100 races" />
                             </OnPlatform>
                         </Entry.Placeholder>
+                        <Entry.Behaviors>
+                            <behaviors:NumericInputBehavior />
+                        </Entry.Behaviors>
                     </Entry>
 
                     <RadioButton
@@ -221,6 +306,13 @@
                                 </Label.Text>
                             </Label>
                         </RadioButton.Content>
+                        <RadioButton.Behaviors>
+                            <toolkit:EventToCommandBehavior
+                                EventName="CheckedChanged"
+                                Command="{Binding SetEndingConditionCommand}"
+                                CommandParameter="time">
+                            </toolkit:EventToCommandBehavior>
+                        </RadioButton.Behaviors>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Unchecked" />
@@ -242,6 +334,7 @@
                         HorizontalOptions="Start" 
                         Opacity="{StaticResource invisible}"
                         IsEnabled="False"
+                        Text="{Binding GameTimeSet, Converter={StaticResource zeroToEmptyConverter}}"
                         TextChanged="OnMaxTimeTextChanged">
                         <Entry.Placeholder>
                             <OnPlatform x:TypeArguments="x:String">
@@ -249,6 +342,9 @@
                                 <On Platform="Android" Value="1-120 min" />
                             </OnPlatform>
                         </Entry.Placeholder>
+                        <Entry.Behaviors>
+                            <behaviors:NumericInputBehavior />
+                        </Entry.Behaviors>
                     </Entry>
                 </Grid>
             </VerticalStackLayout>
@@ -257,7 +353,8 @@
         <!--the Ready button-->
         <Button 
             Grid.Row="3"
-            Text="Ready">
+            Text="Ready"
+            IsEnabled="{Binding AllSettingsAreValid}">
         </Button>
     </Grid>
 </ContentPage>

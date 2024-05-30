@@ -4,8 +4,8 @@ namespace Slugrace.Controls;
 
 public partial class PlayerSettings : ContentView
 {
-	public PlayerSettings()
-	{
+    public PlayerSettings()
+    {
         InitializeComponent();
         GoToNameState(true);
         VisualStateManager.GoToState(initialMoneyEntry, "Empty");
@@ -30,5 +30,5 @@ public partial class PlayerSettings : ContentView
     {
         string visualState = nameValid ? "Valid" : "Invalid";
         VisualStateManager.GoToState(nameEntry, visualState);
-    }    
+    }
 }

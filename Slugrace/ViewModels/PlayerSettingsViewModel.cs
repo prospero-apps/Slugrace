@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-//using CommunityToolkit.Mvvm.Messaging;
-//using Slugrace.Messages;
+using CommunityToolkit.Mvvm.Messaging;
+using Slugrace.Messages;
 using Slugrace.Models;
 
 namespace Slugrace.ViewModels;
@@ -38,7 +38,7 @@ public partial class PlayerSettingsViewModel : ObservableObject
                 OnPropertyChanged(nameof(NameIsValid));
                 OnPropertyChanged(nameof(PlayerIsValid));
 
-                //WeakReferenceMessenger.Default.Send(new PlayerNameChangedMessage(value));
+                WeakReferenceMessenger.Default.Send(new PlayerNameChangedMessage(value));
             }
         }
     }
@@ -55,7 +55,7 @@ public partial class PlayerSettingsViewModel : ObservableObject
                 OnPropertyChanged(nameof(InitialMoneyIsValid));
                 OnPropertyChanged(nameof(PlayerIsValid));
 
-                //WeakReferenceMessenger.Default.Send(new PlayerInitialMoneyChangedMessage(value));
+                WeakReferenceMessenger.Default.Send(new PlayerInitialMoneyChangedMessage(value));
             }
         }
     }
