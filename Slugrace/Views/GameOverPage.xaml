@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:Slugrace.ViewModels"
+             x:DataType="viewmodels:GameOverViewModel"
              x:Class="Slugrace.Views.GameOverPage">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsEnabled="False" IsVisible="False" />
+    </Shell.BackButtonBehavior>
 
     <ContentPage.Resources>
         <Style TargetType="Label">
@@ -10,7 +16,6 @@
             <Setter Property="FontSize" 
                     Value="{OnPlatform 40, Android=30}" />
         </Style>
-
     </ContentPage.Resources>
 
     <Grid
@@ -29,16 +34,19 @@
             />
         <Label 
             Grid.Row="1"
-            Text="There's only one player with any money left." />
+            Text="{Binding GameOverReason}" />
         <Label 
             Grid.Row="2" 
-            Text="The winner is Player 2, having started at $1000, winning at $396." />
+            Text="{Binding WinnerInfo}"
+            HorizontalTextAlignment="Center"
+            FontSize="30" />
         <FlexLayout
             Grid.Row="3"
             JustifyContent="SpaceEvenly">
 
             <Button
-                Text="Play Again" />
+                Text="Play Again"
+                Command="{Binding RestartGameCommand}" />
             <Button
                 Text="Quit" />
         </FlexLayout>

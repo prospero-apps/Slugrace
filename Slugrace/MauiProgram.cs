@@ -28,6 +28,12 @@ public static class MauiProgram
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<SettingsViewModel>();
 
+        builder.Services.AddTransient<RacePage>();
+        builder.Services.AddTransient<GameViewModel>();
+
+        builder.Services.AddTransient<GameOverPage>();
+        builder.Services.AddTransient<GameOverViewModel>();
+
         return builder.Build();
     }
 }
