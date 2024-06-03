@@ -9,5 +9,7 @@ public class Player
     public int WonOrLostMoney { get; set; }
     public int BetAmount { get; set; }
     public bool IsInGame { get; set; }
+    public int PreviousMoney { get; set; }
+    public bool IsBankrupt { get; set; }
 }
 

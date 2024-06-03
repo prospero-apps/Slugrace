@@ -354,7 +354,8 @@
         <Button 
             Grid.Row="3"
             Text="Ready"
-            IsEnabled="{Binding AllSettingsAreValid}">
+            IsEnabled="{Binding AllSettingsAreValid}"
+            Command="{Binding StartGameCommand}">
         </Button>
     </Grid>
 </ContentPage>
