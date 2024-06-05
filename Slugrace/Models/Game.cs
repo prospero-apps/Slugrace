@@ -14,5 +14,9 @@ public class Game
     public EndingCondition GameEndingCondition { get; set; } = EndingCondition.Money;
     public int NumberOfRacesSet { get; set; } = 0;
     public int GameTimeSet { get; set; } = 0;
+    public string GameOverReason { get; set; } = string.Empty;
+    public List<Player> Winners { get; set; } = [];
+    public int RaceNumber { get; set; }
+    public int TimeElapsed { get; set; }
 }
 

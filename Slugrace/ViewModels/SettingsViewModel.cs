@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Slugrace.Messages;
 using Slugrace.Models;
+using Slugrace.Views;
 using System.Collections.ObjectModel;
 
 namespace Slugrace.ViewModels;
@@ -156,6 +157,72 @@ public partial class SettingsViewModel : ObservableObject
             "time" => EndingCondition.Time,
             _ => EndingCondition.Money
         };
+    }
+
+    [RelayCommand]
+    async Task StartGame()
+    {
+        // Populate the Game object        
+        game.Slugs =
+        [
+            new Slug
+            {
+                Name = "Speedster",
+                BaseOdds = 1.33,
+                ImageUrl = "speedster.png",
+                EyeImageUrl = "speedster_eye.png",
+                BodyImageUrl = "speedster_body.png"
+            },
+            new Slug
+            {
+                Name = "Trusty",
+                BaseOdds = 1.59,
+                ImageUrl = "trusty.png",
+                EyeImageUrl = "trusty_eye.png",
+                BodyImageUrl = "trusty_body.png"
+            },
+            new Slug
+            {
+                Name = "Iffy",
+                BaseOdds = 2.5,
+                ImageUrl = "iffy.png",
+                EyeImageUrl = "iffy_eye.png",
+                BodyImageUrl = "iffy_body.png"
+            },
+            new Slug
+            {
+                Name = "Slowpoke",
+                BaseOdds = 2.89,
+                ImageUrl = "slowpoke.png",
+                EyeImageUrl = "slowpoke_eye.png",
+                BodyImageUrl = "slowpoke_body.png"
+            }
+        ];
+
+        var playersInGame = Players.Where(p => p.PlayerIsInGame).ToList();
+
+        game.Players = [];
+
+        foreach (var player in playersInGame)
+        {
+            game.Players.Add(new Player
+            {
+                Id = player.PlayerId,
+                Name = string.IsNullOrEmpty(player.PlayerName)
+                    ? "Player " + player.PlayerId
+                    : player.PlayerName,
+                IsInGame = true,
+                InitialMoney = player.PlayerInitialMoney,
+                CurrentMoney = player.PlayerInitialMoney
+            });
+        }
+
+        // Navigate to RacePage
+        await Shell.Current.GoToAsync($"{nameof(RacePage)}",
+            new Dictionary<string, object>
+            {
+                {"Game", game }
+            });
     }
 }
 

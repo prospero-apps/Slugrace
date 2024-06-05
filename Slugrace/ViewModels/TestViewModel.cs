@@ -1,20 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Windows.Input;
+using System.Collections.ObjectModel;
 
 namespace Slugrace.ViewModels;
 
+[QueryProperty(nameof(Team), "Team")]
 public partial class TestViewModel : ObservableObject
 {
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(LetterCount))]
-    string favoriteColor = string.Empty;    
-
-    public int? LetterCount => FavoriteColor?.Length;
+    ObservableCollection<PlayerSettingsViewModel>? team;
 
     [RelayCommand]
-    private void UseFixedColor(string color)
+    async Task NavigateBack()
     {
-        FavoriteColor = color;
+        await Shell.Current.GoToAsync("..");
     }
 }
+
+
