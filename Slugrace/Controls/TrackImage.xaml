@@ -4,10 +4,12 @@
              xmlns:controls="clr-namespace:Slugrace.Controls"
              xmlns:viewmodels="clr-namespace:Slugrace.ViewModels"
              x:DataType="viewmodels:GameViewModel"
+             BindingContextChanged="ContentView_BindingContextChanged"
              x:Class="Slugrace.Controls.TrackImage">
     <AbsoluteLayout>
         <!--Racetrack-->
         <Image
+            x:Name="track"
             Source="racetrack.png"
             AbsoluteLayout.LayoutBounds="0, 0, 1, 1"
             AbsoluteLayout.LayoutFlags="All"
@@ -15,6 +17,7 @@
 
         <!--Speedster-->
         <controls:SlugImage
+            x:Name="speedster"
             BindingContext="{Binding Slugs[0]}"
             AbsoluteLayout.LayoutBounds=".1, .05, .15, .15"
             AbsoluteLayout.LayoutFlags="All"/>
@@ -25,6 +28,7 @@
 
         <!--Trusty-->
         <controls:SlugImage
+            x:Name="trusty"
             BindingContext="{Binding Slugs[1]}"
             AbsoluteLayout.LayoutBounds=".1, .35, .15, .15"
             AbsoluteLayout.LayoutFlags="All"/>
@@ -35,6 +39,7 @@
 
         <!--Iffy-->
         <controls:SlugImage
+            x:Name="iffy"
             BindingContext="{Binding Slugs[2]}"
             AbsoluteLayout.LayoutBounds=".1, .65, .15, .15"
             AbsoluteLayout.LayoutFlags="All"/>
@@ -45,6 +50,7 @@
 
         <!--Slowpoke-->
         <controls:SlugImage
+            x:Name="slowpoke"
             BindingContext="{Binding Slugs[3]}"
             AbsoluteLayout.LayoutBounds=".1, .95, .15, .15"
             AbsoluteLayout.LayoutFlags="All"/>

@@ -138,6 +138,15 @@ public partial class GameViewModel : ObservableObject
     [ObservableProperty]
     private bool gameEndedManually;
 
+    [ObservableProperty]
+    private uint raceTime;
+
+    [ObservableProperty]
+    private uint minTime;
+
+    [ObservableProperty]
+    private uint finishTime;
+
     public GameViewModel()
     {
         gameTimer = Application.Current!.Dispatcher.CreateTimer();
@@ -265,7 +274,7 @@ public partial class GameViewModel : ObservableObject
     }
 
     [RelayCommand]
-    void StartRace()
+    async Task StartRace()
     {
         // Start race
         RaceStatus = RaceStatus.Started;
@@ -275,15 +284,21 @@ public partial class GameViewModel : ObservableObject
             gameTimer.Start();
         }
 
-        RunRace();
+        await RunRace();
     }
 
-    void RunRace()
+    async Task RunRace()
     {
-        // random winner slug
-        var random = new Random();
-        RaceWinnerSlug = Slugs[random.Next(Slugs.Count)];
-        RaceWinnerSlug.IsRaceWinner = true;
+        await Task.Delay((int)FinishTime);
+        
+        RaceWinnerSlug = Slugs.Where(s => s.RunningTime == MinTime).FirstOrDefault();
+
+        await Task.Delay((int)(RaceTime - FinishTime));
+
+        if (RaceWinnerSlug != null)
+        {
+            RaceWinnerSlug.IsRaceWinner = true;
+        }        
 
         HandleSlugsAfterRace();
 
@@ -419,6 +434,8 @@ public partial class GameViewModel : ObservableObject
     {
         RaceStatus = RaceStatus.NotYetStarted;
         RaceNumber++;
+
+        RaceWinnerSlug = null;
 
         foreach (var player in Players)
         {

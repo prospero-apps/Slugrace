@@ -125,6 +125,9 @@ public partial class SlugViewModel : ObservableObject
         }
     }
 
+    [ObservableProperty]
+    private uint runningTime;
+
     public SlugViewModel()
     {
         slug = new Slug();
