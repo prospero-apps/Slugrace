@@ -75,6 +75,24 @@
 	  <None Remove="Resources\Images\trusty.png" />
 	  <None Remove="Resources\Images\trusty_body.png" />
 	  <None Remove="Resources\Images\trusty_eye.png" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Asleep.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Blind.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Broken Leg.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Devoured.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Drown.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Electroshock.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Grass.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Heart Attack.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Overheat.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Accidents\Turning Back.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Game\Background Music.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Game\Game Over.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Game\Go.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Game\Slugs Running.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Slugs Winning\Iffy Win.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Slugs Winning\Slowpoke Win.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Slugs Winning\Speedster Win.mp3" />
+	  <None Remove="Resources\Raw\Sounds\Slugs Winning\Trusty Win.mp3" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -83,6 +101,7 @@
 		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.40" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.40" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+		<PackageReference Include="Plugin.Maui.Audio" Version="3.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

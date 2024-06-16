@@ -12,6 +12,8 @@ namespace Slugrace.ViewModels;
 [QueryProperty(nameof(Game), "Game")]
 public partial class GameViewModel : ObservableObject
 {
+    SoundViewModel soundViewModel;
+
     readonly IDispatcherTimer gameTimer;
     readonly IDispatcherTimer gameOverPageDelayTimer;
 
@@ -147,11 +149,14 @@ public partial class GameViewModel : ObservableObject
     [ObservableProperty]
     private uint finishTime;
 
-    public GameViewModel()
+    [ObservableProperty]
+    private bool muted;
+
+    public GameViewModel(SoundViewModel soundViewModel)
     {
         gameTimer = Application.Current!.Dispatcher.CreateTimer();
         gameTimer.Interval = TimeSpan.FromSeconds(1);
-        gameTimer.Tick += (sender, e) =>
+        gameTimer.Tick += async (sender, e) =>
         {
             if (TimeRemaining > TimeSpan.Zero)
             {
@@ -161,12 +166,14 @@ public partial class GameViewModel : ObservableObject
             if (TimeRemaining == TimeSpan.Zero
                 && RaceStatus == RaceStatus.Finished)
             {
-                CheckForGameOver();
+                await CheckForGameOver();
             }
         };
 
         gameOverPageDelayTimer = Application.Current!.Dispatcher.CreateTimer();
         gameOverPageDelayTimer.Interval = TimeSpan.FromSeconds(3);
+
+        this.soundViewModel = soundViewModel;
 
         WeakReferenceMessenger.Default.Register<PlayerBetAmountChangedMessage>(
             this, (r, m) => OnBetAmountChangedMessageReceived(m.Value));
@@ -210,7 +217,8 @@ public partial class GameViewModel : ObservableObject
                 WinNumber = 0,
                 Odds = Math.Round(value.Slugs[0].BaseOdds
                     + new Random().Next(0, 10) / 100, 2),
-                PreviousOdds = value.Slugs[0].BaseOdds
+                PreviousOdds = value.Slugs[0].BaseOdds,
+                WinSound = value.Slugs[0].WinSound
             },
             new()
             {
@@ -221,7 +229,8 @@ public partial class GameViewModel : ObservableObject
                 WinNumber = 0,
                 Odds = Math.Round(value.Slugs[1].BaseOdds
                     + new Random().Next(0, 10) / 100, 2),
-                PreviousOdds = value.Slugs[1].BaseOdds
+                PreviousOdds = value.Slugs[1].BaseOdds,
+                WinSound = value.Slugs[1].WinSound
             },
             new()
             {
@@ -232,7 +241,8 @@ public partial class GameViewModel : ObservableObject
                 WinNumber = 0,
                 Odds = Math.Round(value.Slugs[2].BaseOdds
                     + new Random().Next(0, 10) / 100, 2),
-                PreviousOdds = value.Slugs[2].BaseOdds
+                PreviousOdds = value.Slugs[2].BaseOdds,
+                WinSound = value.Slugs[2].WinSound
             },
             new()
             {
@@ -243,7 +253,8 @@ public partial class GameViewModel : ObservableObject
                 WinNumber = 0,
                 Odds = Math.Round(value.Slugs[3].BaseOdds
                     + new Random().Next(0, 10) / 100, 2),
-                PreviousOdds = value.Slugs[3].BaseOdds
+                PreviousOdds = value.Slugs[3].BaseOdds,
+                WinSound = value.Slugs[3].WinSound
             },
         ];
 
@@ -271,6 +282,8 @@ public partial class GameViewModel : ObservableObject
         Players = players;
 
         PlayersStillInGame = Players.ToObservableCollection();
+
+        _ = soundViewModel.PlayBackgroundMusic("Game", "Background Music.mp3");
     }
 
     [RelayCommand]
@@ -284,27 +297,39 @@ public partial class GameViewModel : ObservableObject
             gameTimer.Start();
         }
 
+        _ = soundViewModel.PlaySound("Game", "Go.mp3", .2);
+
         await RunRace();
     }
 
     async Task RunRace()
     {
+        _ = soundViewModel.PlaySound("Game", "Slugs Running.mp3", .5, true);
+
         await Task.Delay((int)FinishTime);
         
-        RaceWinnerSlug = Slugs.Where(s => s.RunningTime == MinTime).FirstOrDefault();
+        RaceWinnerSlug = Slugs.Where(
+            s => s.RunningTime == MinTime).FirstOrDefault();
+
+        if (RaceWinnerSlug != null)
+        {
+            _ = soundViewModel.PlaySound("Slugs Winning", RaceWinnerSlug.WinSound);
+        }        
 
         await Task.Delay((int)(RaceTime - FinishTime));
 
         if (RaceWinnerSlug != null)
         {
             RaceWinnerSlug.IsRaceWinner = true;
-        }        
+        }
+
+        soundViewModel.Clean();
 
         HandleSlugsAfterRace();
 
         HandlePlayersAfterRace();
 
-        FinishRace();
+        await FinishRace();
     }
 
     void HandleSlugsAfterRace()
@@ -336,21 +361,21 @@ public partial class GameViewModel : ObservableObject
         }
     }
 
-    void FinishRace()
+    async Task FinishRace()
     {
         RaceStatus = RaceStatus.Finished;
 
-        CheckForGameOver();
+        await CheckForGameOver();
     }
 
-    void CheckForGameOver(bool endedManually = false)
+    async Task CheckForGameOver(bool endedManually = false)
     {
         // This is for the case when the game is ended manually
         if (endedManually)
         {
             GetWinners();
             GameOverReason = "You ended the game manually.";
-            EndGame();
+            await EndGame();
         }
 
         // This works the same for each ending condition.
@@ -360,7 +385,7 @@ public partial class GameViewModel : ObservableObject
         {
             Winners.Add(PlayersStillInGame[0]);
             GameOverReason = "There's only one player with any money left.";
-            EndGame();
+            await EndGame();
         }
 
         // scenario 2: all players go bankrupt simultaneously
@@ -370,7 +395,7 @@ public partial class GameViewModel : ObservableObject
             GameOverReason = Players.Count == 1
                 ? "You are bankrupt."
                 : "All players are bankrupt.";
-            EndGame();
+            await EndGame();
         }
 
         // This works for the Races ending condition
@@ -380,7 +405,7 @@ public partial class GameViewModel : ObservableObject
             GetWinners();
 
             GameOverReason = "The number of races you set has been reached.";
-            EndGame();
+            await EndGame();
         }
         // This works for the Time ending condition
         else if (GameEndingCondition == EndingCondition.Time
@@ -389,7 +414,7 @@ public partial class GameViewModel : ObservableObject
             GetWinners();
 
             GameOverReason = "The game time you set is up.";
-            EndGame();
+            await EndGame();
         }
     }
 
@@ -406,7 +431,7 @@ public partial class GameViewModel : ObservableObject
         }
     }
 
-    void EndGame()
+    async Task EndGame()
     {
         gameTimer.Stop();
 
@@ -414,11 +439,15 @@ public partial class GameViewModel : ObservableObject
 
         gameOverPageDelayTimer.Start();
 
+        await soundViewModel.Attenuate();
+
         gameOverPageDelayTimer.Tick += async (sender, e) =>
         {
             gameOverPageDelayTimer.Stop();
 
             IsShowingFinalResults = false;
+
+            await soundViewModel.PlaySound("Game", "Game Over.mp3", .5);
 
             // Navigate to GameOverPage
             await Shell.Current.GoToAsync($"{nameof(GameOverPage)}",
@@ -427,6 +456,8 @@ public partial class GameViewModel : ObservableObject
                     {"Game", this }
                 });
         };
+
+        soundViewModel.Stop();
     }
 
     [RelayCommand]
@@ -445,9 +476,9 @@ public partial class GameViewModel : ObservableObject
     }
 
     [RelayCommand]
-    void EndGameManually()
+    async Task EndGameManually()
     {
-        CheckForGameOver(true);
+        await CheckForGameOver(true);
     }
 
     [RelayCommand]
@@ -463,5 +494,11 @@ public partial class GameViewModel : ObservableObject
         await Shell.Current.GoToAsync("..");
     }
 
+    [RelayCommand]
+    public void MuteUnmute()
+    {
+        soundViewModel.MuteUnmute();
+        Muted = soundViewModel.Muted;
+    }
 }
 

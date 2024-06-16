@@ -125,6 +125,19 @@ public partial class SlugViewModel : ObservableObject
         }
     }
 
+    public string WinSound
+    {
+        get => slug.WinSound;
+        set
+        {
+            if (slug.WinSound != value)
+            {
+                slug.WinSound = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     [ObservableProperty]
     private uint runningTime;
 
