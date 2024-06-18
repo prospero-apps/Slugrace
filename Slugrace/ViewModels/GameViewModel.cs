@@ -168,6 +168,11 @@ public partial class GameViewModel : ObservableObject
     [ObservableProperty]
     private uint afterAccidentTime = 0;
 
+    // Game screenshots used for the InstructionsPage
+    [ObservableProperty]
+    private List<string> screenshots;
+
+
     public GameViewModel(SoundViewModel soundViewModel, IPopupService popupService)
     {
         gameTimer = Application.Current!.Dispatcher.CreateTimer();
@@ -197,6 +202,27 @@ public partial class GameViewModel : ObservableObject
 
         WeakReferenceMessenger.Default.Register<PlayerSelectedSlugChangedMessage>(
             this, (r, m) => OnSelectedSlugChangedMessageReceived(m.Value));
+
+#if WINDOWS
+        Screenshots = 
+        [
+            "settings_windows.png",
+            "race_bets_windows.png",
+            "race_results_windows.png",
+            "gameover_windows.png"
+        ];
+#endif
+
+#if ANDROID
+        Screenshots =
+        [
+            "settings_android.png",
+            "race_bets_android.png",
+            "race_results_android.png",
+            "gameover_android.png"
+        ];
+#endif
+
     }
 
     private void OnBetAmountChangedMessageReceived(int value)
@@ -321,9 +347,10 @@ public partial class GameViewModel : ObservableObject
 
         // Check for accident.   
         bool thereIsAnAccident;
+        bool accidentExpected = new Random().Next(0, 4) == 0;
 
         // Should there be an accident?
-        if (RaceNumber > 5 && AccidentViewModel != null && AccidentViewModel.Expected)        
+        if (RaceNumber > 5 && accidentExpected)        
         {
             // If so, then...
             thereIsAnAccident = true;
