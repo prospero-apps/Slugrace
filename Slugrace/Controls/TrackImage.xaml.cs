@@ -77,7 +77,7 @@ public partial class TrackImage : ContentView
                 vm.MinTime = runningTimes.Min();
                 vm.FinishTime = (uint)(.79 * vm.MinTime);
 
-                speedsterMovement!.Commit(
+                speedsterMovement?.Commit(
                     this, 
                     "moveSpeedster", 
                     16, 
@@ -86,7 +86,7 @@ public partial class TrackImage : ContentView
                     null, 
                     () => false);
 
-                trustyMovement!.Commit(
+                trustyMovement?.Commit(
                     this, 
                     "moveTrusty", 
                     16, 
@@ -95,7 +95,7 @@ public partial class TrackImage : ContentView
                     null, 
                     () => false);
 
-                iffyMovement!.Commit(
+                iffyMovement?.Commit(
                     this, 
                     "moveIffy", 
                     16, 
@@ -104,7 +104,7 @@ public partial class TrackImage : ContentView
                     null, 
                     () => false);
 
-                slowpokeMovement!.Commit(
+                slowpokeMovement?.Commit(
                     this, 
                     "moveSlowpoke", 
                     16, 
