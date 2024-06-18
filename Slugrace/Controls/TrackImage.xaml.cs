@@ -96,7 +96,7 @@ public partial class TrackImage : ContentView
     {
         if (vm!.RaceStatus == RaceStatus.Started)
         {            
-            speedsterMovement!.Commit(
+            speedsterMovement?.Commit(
                 this,
                 "moveSpeedster",
                 16,
@@ -105,7 +105,7 @@ public partial class TrackImage : ContentView
                 null,
                 () => false);
 
-            trustyMovement!.Commit(
+            trustyMovement?.Commit(
                 this,
                 "moveTrusty",
                 16,
@@ -114,7 +114,7 @@ public partial class TrackImage : ContentView
                 null,
                 () => false);
 
-            iffyMovement!.Commit(
+            iffyMovement?.Commit(
                 this,
                 "moveIffy",
                 16,
@@ -123,7 +123,7 @@ public partial class TrackImage : ContentView
                 null,
                 () => false);
 
-            slowpokeMovement!.Commit(
+            slowpokeMovement?.Commit(
                 this,
                 "moveSlowpoke",
                 16,
@@ -154,22 +154,25 @@ public partial class TrackImage : ContentView
                 this.AbortAnimation("accidentAnimation");
             }
 
-            slugImage!.StartEyeRotation();
-
-            if (slugImage.ZIndex != 0)
+            if (slugImage != null)
             {
-                slugImage.ZIndex = 0;
-            }
+                slugImage.StartEyeRotation();
 
-            if (slugImage.Opacity != 1)
-            {
-                slugImage.Opacity = 1;
-            }
+                if (slugImage.ZIndex != 0)
+                {
+                    slugImage.ZIndex = 0;
+                }
 
-            if (slugImage.ScaleX != 1)
-            {
-                slugImage.ScaleX = 1;
-            }
+                if (slugImage.Opacity != 1)
+                {
+                    slugImage.Opacity = 1;
+                }
+
+                if (slugImage.ScaleX != 1)
+                {
+                    slugImage.ScaleX = 1;
+                }
+            }            
         }
         else
         {
