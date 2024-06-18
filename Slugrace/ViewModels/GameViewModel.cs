@@ -321,9 +321,10 @@ public partial class GameViewModel : ObservableObject
 
         // Check for accident.   
         bool thereIsAnAccident;
+        bool accidentExpected = new Random().Next(0, 4) == 0;
 
         // Should there be an accident?
-        if (RaceNumber > 5 && AccidentViewModel != null && AccidentViewModel.Expected)        
+        if (RaceNumber > 5 && accidentExpected)        
         {
             // If so, then...
             thereIsAnAccident = true;

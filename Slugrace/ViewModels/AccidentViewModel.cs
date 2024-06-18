@@ -158,9 +158,7 @@ public partial class AccidentViewModel : ObservableObject
     public uint Duration => AccidentDurations[AccidentType];
 
     [ObservableProperty]
-    private SlugViewModel? affectedSlug;
-
-    public bool Expected => new Random().Next(0, 4) == 0;
+    private SlugViewModel? affectedSlug;    
 
     public AccidentViewModel(AccidentType accidentType)
     {
