@@ -7,7 +7,8 @@ public partial class SoundViewModel : ObservableObject
 {
     private readonly IAudioManager audioManager;
     private IAudioPlayer? audioPlayer;
-    private List<IAudioPlayer> effectPlayers;
+    private List<IAudioPlayer> effectPlayers; 
+    private List<IAudioPlayer> loopingAccidentPlayers;
 
     [ObservableProperty]
     private double volume;
@@ -19,6 +20,7 @@ public partial class SoundViewModel : ObservableObject
     {
         this.audioManager = audioManager;
         effectPlayers = [];
+        loopingAccidentPlayers = [];
         Volume = .3;
     }
 
@@ -34,8 +36,12 @@ public partial class SoundViewModel : ObservableObject
         audioPlayer.Play();
     }
 
-    public async Task PlaySound(string folderName, string fileName, 
-        double volume = 1, bool loop = false)
+    public async Task PlaySound(
+        string folderName, 
+        string fileName, 
+        double volume = 1, 
+        bool loop = false, 
+        bool loopingAccidentSound = false)
     {
         Clean();
 
@@ -44,7 +50,14 @@ public partial class SoundViewModel : ObservableObject
         var player = audioManager.CreatePlayer(
             await FileSystem.OpenAppPackageFileAsync(path));
 
-        effectPlayers.Add(player);
+        if (!loopingAccidentSound)
+        {
+            effectPlayers.Add(player);
+        }
+        else
+        {
+            loopingAccidentPlayers.Add(player);
+        }
 
         player.Volume = volume;
         player.Loop = loop;
@@ -60,19 +73,36 @@ public partial class SoundViewModel : ObservableObject
         }
     }
 
-    public void Clean()
+    public void Clean(bool loopingAccidentSound = false)
     {
-        foreach (var player in effectPlayers)
+        if (!loopingAccidentSound)
         {
-            if (player.IsPlaying)
+            foreach (var player in effectPlayers)
             {
-                player.Stop();
+                if (player.IsPlaying)
+                {
+                    player.Stop();
+                }
+
+                player.Dispose();
             }
 
-            player.Dispose();
+            effectPlayers.Clear();
         }
+        else
+        {
+            foreach (var player in loopingAccidentPlayers)
+            {
+                if (player.IsPlaying)
+                {
+                    player.Stop();
+                }
 
-        effectPlayers.Clear();
+                player.Dispose();
+            }
+
+            loopingAccidentPlayers.Clear();
+        }
     }
 
     public async Task Attenuate()

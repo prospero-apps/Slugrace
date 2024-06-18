@@ -6,7 +6,7 @@
              x:DataType="viewmodels:GameViewModel"
              BindingContextChanged="ContentView_BindingContextChanged"
              x:Class="Slugrace.Controls.TrackImage">
-    <AbsoluteLayout>
+    <AbsoluteLayout x:Name="layout">
         <!--Racetrack-->
         <Image
             x:Name="track"

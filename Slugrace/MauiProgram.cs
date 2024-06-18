@@ -3,6 +3,7 @@ using Slugrace.Views;
 using Slugrace.ViewModels;
 using CommunityToolkit.Maui;
 using Plugin.Maui.Audio;
+using Slugrace.Popups;
 
 namespace Slugrace;
 
@@ -40,6 +41,8 @@ public static class MauiProgram
         builder.Services.AddTransient<SoundViewModel>();
 
         builder.Services.AddSingleton(AudioManager.Current);
+
+        builder.Services.AddTransientPopup<AccidentPopup, AccidentPopupViewModel>();
 
         return builder.Build();
     }
